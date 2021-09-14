@@ -1,0 +1,23 @@
+{
+  "name": "hamster-wars",
+  "version": "1.0.0",
+  "description": "fullstack school project",
+  "main": "index.js",
+  "scripts": {
+    
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arash-aloha/hamster-wars.git"
+  },
+  "keywords": [],
+  "author": "Arash Ahmadi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arash-aloha/hamster-wars/issues"
+  },
+  "homepage": "https://github.com/arash-aloha/hamster-wars#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
