@@ -1,16 +1,14 @@
 {
   "name": "hamster-wars",
   "version": "1.0.0",
-  "description": "fullstack school project",
+  "description": "backend school project",
   "main": "index.js",
-  "scripts": {
-    
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/arash-aloha/hamster-wars.git"
   },
-  "keywords": [],
+  "keywords": ["Firestore", "Express", "NodeJS"],
   "author": "Arash Ahmadi",
   "license": "ISC",
   "bugs": {
@@ -18,6 +16,7 @@
   },
   "homepage": "https://github.com/arash-aloha/hamster-wars#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "firebase-admin": "^9.11.1"
   }
 }
