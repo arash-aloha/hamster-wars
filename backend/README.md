@@ -1,2 +1,2 @@
 # hamster-wars
-fullstack school project
+backend school project
