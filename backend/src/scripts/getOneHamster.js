@@ -3,11 +3,11 @@ const db = connect();
 
 const hamsters = 'hamsters';
 
-getOneDoc()
+getOneHamster()
 
-async function getOneDoc(id) {
+async function getOneHamster(id) {
     console.log('Looking for hamster...');
-    const hamsterId = id || '0AWvVBVugJmqOHTURvTT';
+    const hamsterId = id;
 
     hamstersSnapshot = await 
     db.collection(hamsters).doc(hamsterId).get();
@@ -21,4 +21,4 @@ async function getOneDoc(id) {
     console.log('Found: ', data);
 }
 
-module.exports = getOneDoc;
+module.exports = getOneHamster;

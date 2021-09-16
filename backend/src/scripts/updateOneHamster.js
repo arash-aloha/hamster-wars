@@ -3,9 +3,9 @@ const db = connect();
 
 const hamsters = 'hamsters';
 
-updateDoc()
+updateOneHamster()
 
-async function updateDoc(id) {
+async function updateOneHamster(id) {
     console.log('Update document...');
     const hamsterId = id || '0AWvVBVugJmqOHTURvTT';
 

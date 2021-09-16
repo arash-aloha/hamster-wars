@@ -3,9 +3,9 @@ const db = connect();
 
 const hamsters = 'hamsters'
 
-deleteOneDoc()
+deleteOneHamster()
 
-async function deleteOneDoc(id) {
+async function deleteOneHamster(id) {
     console.log('Deleting a document...');
     const hamsterId = id || 'VHHQTVjo4yShftzJsF4I';
 
@@ -14,4 +14,4 @@ async function deleteOneDoc(id) {
 
 }
 
-module.exports = { deleteOneDoc };
+module.exports = deleteOneHamster;
