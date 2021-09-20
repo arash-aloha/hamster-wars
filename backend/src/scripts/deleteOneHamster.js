@@ -1,17 +1,20 @@
 const { connect } = require('../database.js');
 const db = connect(); 
 
-const hamsters = 'hamsters'
+const HAMSTERS = 'hamsters'
 
 deleteOneHamster()
 
 async function deleteOneHamster(id) {
-    console.log('Deleting a document...');
-    const hamsterId = id || 'VHHQTVjo4yShftzJsF4I';
 
-    const hamstersRef = db.collection(hamsters).doc(hamsterId);
-    await hamstersRef.delete();
-
+    const hamsterId = id || '274btE9Kw4zk0DoFi8wc';
+    const hamstersRef = db.collection(HAMSTERS).doc(hamsterId);
+    const hamstersSnapshot = await hamstersRef.get();
+    console.log('Document exits? ', hamstersSnapshot.exists)
+    if( !hamstersSnapshot.exists ) {
+        return null
+    }
+    hamstersRef.delete();
 }
 
 module.exports = deleteOneHamster;

@@ -10,4 +10,13 @@ function connect() {
     return db;
 }
 
+/*
+let privateKey;
+if( process.env.PRIVATE_KEY ) {
+    privateKey = JSON.parse(process.env.PRIVATE_KEY)
+} else {
+    privateKey = require('./example-private-key.json)
+}
+*/
+
 module.exports = { connect }

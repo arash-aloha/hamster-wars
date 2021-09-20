@@ -3,12 +3,18 @@
   "version": "1.0.0",
   "description": "backend school project",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start-server": "node src/server.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/arash-aloha/hamster-wars.git"
   },
-  "keywords": ["Firestore", "Express", "NodeJS"],
+  "keywords": [
+    "Firestore",
+    "Express",
+    "NodeJS"
+  ],
   "author": "Arash Ahmadi",
   "license": "ISC",
   "bugs": {
@@ -16,6 +22,7 @@
   },
   "homepage": "https://github.com/arash-aloha/hamster-wars#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "firebase-admin": "^9.11.1"
   }
