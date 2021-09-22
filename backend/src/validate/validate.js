@@ -12,14 +12,27 @@ function isHamsterObject(checkBody) {
         !keys.includes('defeats') ||
         !keys.includes('name') ||
         !keys.includes('loves')
+        ) {
+        return false
+    } 
+        return true
+}
+
+function returningObjects(checkBody) {
+    if( (typeof checkBody) !== 'object') {
+        return false
+    }
+
+    let keys = Object.keys(checkBody)
+    if( 
+        !keys.includes('games') || 
+        !keys.includes('wins')
     ) {
         return false
     } 
         return true
 }
 
-function isCorrectIndex(index, maxIndex) {
-    return index >= 0 && index < maxIndex;
-}
 
-module.exports = { isHamsterObject, isCorrectIndex };
+
+module.exports = { isHamsterObject, returningObjects };

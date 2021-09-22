@@ -1,32 +1,44 @@
+const { response } = require('express');
 const express = require('express');
 const router = express.Router();
-
 const { connect } = require('../database.js');
-console.log('Före connect')
 const db = connect(); 
 const HAMSTERS = 'hamsters'
 
-const { isHamsterObject, isCorrectIndex } = require('../validate/validate.js');
+const { isHamsterObject, returningObjects } = require('../validate/validate.js');
 
 //ENDPOINTS GET
 router.get('/', async (req, res) => {
-    let hamsterArray = await getAllHamsters();
+    const hamsterArray = await getAllHamsters();
     res.send(hamsterArray);
 })
 
-//lägg in random*
+//ENDPOINT CUTEST
+router.get('/cutest', async (req, res) => {
+    const lookingForCuteness = await hamsterStats();
+    if( !lookingForCuteness ) {
+        res.sendStatus(400)
+    }
+    res.status(200).send(lookingForCuteness)
+    return
+})
+
+//ENDPOINT RANDOM
+router.get('/random', async (req, res) => {
+    const hamstersArray = await getAllHamsters()
+    let randomHamster = hamstersArray[Math.floor(Math.random()*hamstersArray.length)];
+    res.status(200).send(randomHamster);
+})
 
 //ENDPOINTS GET ONE
-//kontrollera varför !findhamster ger fel i console
 router.get('/:id', async (req, res) => {
     const findHamster = await getOneHamster(req.params.id);
-    if( findHamster ) {
-        const hamster = await findHamster.data()
-        res.send(hamster);
-    }
     if( !findHamster.exists ) {
         res.sendStatus(404);
+        return
     }
+    const hamster = await findHamster.data()
+    res.status(200).send(hamster);
 })
 
 //ENDPOINTS PUT
@@ -36,12 +48,11 @@ router.put('/:id', async (req, res) => {
     if( !updateHamster.exists ) {
         res.sendStatus(404)
         return
-    }
-
-    if( !isHamsterObject(req.body) ) {
+    };
+    if( !returningObjects(req.body) ) {
         res.status(400).send('The request is not a Hamster Object.')
         return
-    }                   
+    };                  
     await updateOne(req.params.id, req.body);
     res.sendStatus(200)
     return
@@ -49,55 +60,36 @@ router.put('/:id', async (req, res) => {
 
 //ENDPOINTS POST
 router.post('/', async (req, res) => {
-    //let body = req.body
-    //let test = await addOneHamster(body)
     if( !isHamsterObject(req.body) ) {
         res.status(400).send('Bad request');
         return
     } 
-    //uppdatera nedan
-    let test = await addOneHamster(req.body)
-    res.status(200).send(test)
-    // await addOneHamster(body);
-    
+    let postHamster = await addOneHamster(req.body);
+    res.status(200).send(postHamster);
+    // await addOneHamster(bo
 })
 
 //ENDPOINT
 router.delete('/:id', async (req, res) => {
-    //let index = req.params.id;
-    res.send('test')
-    //let deleteHamsterFromArray = await deleteOneHamster(index);
+    let index = req.params.id;
+    let removedHamster = await getOneHamster(req.params.id);
+    if( !removedHamster.exists ) {
+        res.sendStatus(404)
+        return
+    }
+    else {
+        await deleteOneHamster(index);
+        res.sendStatus(200);
+    }
     
-    
-
-
-
-
-
-    // if( deleteHamsterFromArray ) {
-    //     res.sendStatus(404);
-    // } 
-    // else {
-    //     res.sendStatus(200);
-    // }
-
-
-    // if( index !== hamstersSnapshot[index] ) {
-    //     res.status(400).send('Does not exists.')
-    //     return
-    // } else {
-    //     res.send('Exits', )
-    // }
-
-    
-    // let deleteHamsterFromArray = await deleteOneHamster(index);
-
 })
 
 
+/*********************
+ * F U N C T I O N S * 
+ *********************/
 
-
-//ASYNC SCRIPT GET ALL
+//SCRIPT GET ALL
 const getAllHamsters = async () => {
     const hamstersRef = db.collection(HAMSTERS);
     const hamstersSnapshot = await hamstersRef.get();
@@ -116,19 +108,35 @@ const getAllHamsters = async () => {
     return hamsterArray;
 }
 
+//SCRIPT GET CUTEST / WINNER / LOOSER
+const hamsterStats = async () => {
+    let allHamsters = await getAllHamsters()
+    let cutestHamster = [];
+    let winners = [];
 
-//ASYNC SCRIPT GET ONE
+    allHamsters.forEach(hamster => {
+        if (hamster.games > 0 && hamster.wins > 0) {
+            winners.push(hamster)
+        }
+    })
+
+    winners.forEach(hamster => {
+        procent = hamster.wins / hamster.games * 100
+        hamster.procent = procent;
+        cutestHamster.push(hamster);
+
+        console.log("inside foreach",hamster)
+        console.log("inside foreach", cutestHamster)
+    })
+    //console.log("outside foreach", hamster)
+    return cutestHamster
+    
+}
+
+//SCRIPT GET ONE
 async function getOneHamster(id) {
     const hamstersRef = db.collection(HAMSTERS).doc(id);
     const hamstersSnapshot = await hamstersRef.get();
-
-    // if( hamstersSnapshot.exists ) {
-    //     return hamstersSnapshot.data()
-    // } 
-    // else {
-    //     return null
-    // }
-
     return hamstersSnapshot;
 }
 
@@ -136,13 +144,11 @@ async function getOneHamster(id) {
 async function updateOne(id, object) {
     const hamstersRef = db.collection(HAMSTERS).doc(id);
     const settings = { merge: true };
-    
-    hamstersRef.set(object, settings);
+    return hamstersRef.set(object, settings);
 }
 
 //ASYNC SCRIPT POST
 async function addOneHamster(object) {
-    //console.log('Add a new document...');
     const hamstersRef = await db.collection(HAMSTERS).add(object);
     const newHamster = { id: hamstersRef.id };
     return newHamster;
@@ -150,13 +156,12 @@ async function addOneHamster(object) {
 
 //ASYNC SCRIPT DELETE
 async function deleteOneHamster(id) {
-
     const hamsterId = id;
     const hamstersRef = db.collection(HAMSTERS).doc(hamsterId);
     const hamstersSnapshot = await hamstersRef.get();
     console.log('Document exits? ', hamstersSnapshot.exists)
     if( !hamstersSnapshot.exists ) {
-        return null
+        return hamstersSnapshot.id
     }
     hamstersRef.delete();
 }
