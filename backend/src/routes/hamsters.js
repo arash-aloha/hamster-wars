@@ -81,7 +81,6 @@ router.delete('/:id', async (req, res) => {
         await deleteOneHamster(index);
         res.sendStatus(200);
     }
-    
 })
 
 
@@ -125,8 +124,6 @@ const hamsterStats = async () => {
         hamster.procent = procent;
         cutestHamster.push(hamster);
 
-        console.log("inside foreach",hamster)
-        console.log("inside foreach", cutestHamster)
     })
     //console.log("outside foreach", hamster)
     return cutestHamster

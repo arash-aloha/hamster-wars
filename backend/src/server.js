@@ -17,8 +17,8 @@ app.use( (req, res, next) => {
     console.log(`${requestCount}, Method: ${req.method}, Request URL: ${req.url}`, req.body)
     next();
 })
-//app.use( express.static() )
-
+app.use( '/public', express.static(__dirname + '/../public') )
+app.use( '/img', express.static(__dirname + '/../hamsters') )
 //Endpoints
 app.use('/hamsters', hamstersRouter);
 
