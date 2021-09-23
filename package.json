@@ -4,7 +4,7 @@
   "description": "backend school project",
   "main": "index.js",
   "scripts": {
-    "start-server": "node src/server.js"
+    "start": "node backend/src/server.js"
   },
   "repository": {
     "type": "git",
