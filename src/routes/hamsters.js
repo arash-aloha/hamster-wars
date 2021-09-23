@@ -125,7 +125,7 @@ const hamsterStats = async () => {
         cutestHamster.push(hamster);
 
     })
-    //console.log("outside foreach", hamster)
+    console.log("outside foreach", cutestHamster)
     return cutestHamster
     
 }
