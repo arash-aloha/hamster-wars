@@ -1,5 +1,5 @@
 const admin = require("firebase-admin");
-const serviceAccount = require('../src/secrets/firebase-key.json');
+
 
 
 let privateKey;
@@ -13,7 +13,7 @@ if( process.env.PRIVATE_KEY ) {
 
 function connect() {
     admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+    credential: admin.credential.cert(privateKey)
     });    
     const db = admin.firestore();
     return db;

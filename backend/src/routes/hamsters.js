@@ -156,7 +156,6 @@ async function deleteOneHamster(id) {
     const hamsterId = id;
     const hamstersRef = db.collection(HAMSTERS).doc(hamsterId);
     const hamstersSnapshot = await hamstersRef.get();
-    console.log('Document exits? ', hamstersSnapshot.exists)
     if( !hamstersSnapshot.exists ) {
         return hamstersSnapshot.id
     }
